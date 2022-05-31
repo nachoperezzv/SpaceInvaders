@@ -1,4 +1,5 @@
 import pygame, os 
+from lib.widgets import loc_params
 
 # Tamaños de la ventana del juego
 WINDOW_WIDTH    =   900
@@ -38,9 +39,21 @@ ICON            =   ICONS + "/icon.png"
 # Font del juego
 pygame.font.init()
 RETRO_FONT_PATH =   FONTS + "/retro_gaming/RetroGaming.ttf"
-retro_font      =   pygame.font.Font(RETRO_FONT_PATH,48)
+retro_font      =   pygame.font.Font(RETRO_FONT_PATH,16)
+retro_font_btn  =   pygame.font.Font(RETRO_FONT_PATH,36)
+retro_font_title=   pygame.font.Font(RETRO_FONT_PATH,48)
 
 # Colores
 INIT_ALPHA      =   [75,75,75,150]
 BLACK           =   [0,0,0]
+SOFT_BLACK      =   [25,25,25]
 WHITE           =   [255,255,255]
+GREY            =   [175,175,175]
+LIGHT_GREY      =   [195,195,195]
+
+
+# Parámetros de los botones 
+BTN_START_LOC   =   loc_params(325,170,250,50)
+BTN_TUTORIAL_LOC=   loc_params(325,240,250,50)
+BTN_SETTINGS_LOC=   loc_params(325,310,250,50)
+BTN_CREDITS_LOC =   loc_params(325,370,250,50)
