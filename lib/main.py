@@ -1,5 +1,16 @@
 import pygame, sys
 
+# -------------------
+# Variables globales |
+# -------------------
+
+# Encargada de controlar la ventana en la que nos encontramos
+# 0 -> pantalla de inicio: Jugar, Settings, Tutorial ...
+# 1 -> pantalla de tutorial
+# 2 -> pantalla de configuración: Volumen música, Volumen efectos, ...
+# Por poner: niveles
+window      =   0
+
 # Función main para establecer la configuración de la pantalla, caption, icono, etc
 def main():
 
@@ -22,11 +33,17 @@ def main_loop():
                 pygame.quit()
                 sys.exit()
 
-        screen.fill([0,0,0])
+        #TODO: Añadir movimiento ligero al fondo para crear dinamismo
+        bg      =   pygame.image.load(BG1)
+        bg_rect =   bg.get_rect()
+        alpha   =   bg.convert_alpha()
+        al_rect =   alpha.get_rect()
+        alpha.fill([75,75,75,150])
 
-        cube = pygame.Rect(50,50,40,20)
-        pygame.draw.rect(screen,[255,255,255],cube)
+        screen.blit(bg,bg_rect)
+        screen.blit(alpha,al_rect)
 
+        
         pygame.display.flip()
 
 
