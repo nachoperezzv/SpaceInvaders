@@ -10,7 +10,7 @@ class Init_Window():
         self.screen = screen
         self.functions = functions
 
-        # Fondo del nivel 1
+        # Fondo predeterminado, que es el mismo que el del nivel 1
         self.bg      =   pygame.image.load(BG1)
         self.bg_rect =   self.bg.get_rect()
 
@@ -64,5 +64,75 @@ class Settings_Window():
         pass
 
 class Credits_Window():
-    def __init__(self):
-        pass
+    def __init__(self, screen, functions):
+        self.screen     =   screen
+        self.functions  =   functions
+
+        # Inicializamos las fuentes en el fichero
+        pygame.font.init()
+
+        # Actualizamos la pantalla a la de créditos
+        # Fondo predeterminado, que es el mismo que el del nivel 1
+        self.bg      =   pygame.image.load(BG1)
+        self.bg_rect =   self.bg.get_rect()
+
+        # Lo oscurecemos un poco con un fondo en alpha de la misma imagen superpuesto
+        self.alpha   =   self.bg.convert_alpha()
+        self.al_rect =   self.alpha.get_rect()
+        self.alpha.fill(INIT_ALPHA)
+
+        # Botón de vuelta atrás
+        self.btn_back    =   Button("<-", BTN_GO_BACK, retro_font)
+
+    def draw(self):
+
+        # Actualización del fondo para pasar de la pantalla inicial a la de creditos
+        self.screen.blit(self.bg,self.bg_rect)
+        self.screen.blit(self.alpha,self.al_rect)
+
+        # Imprimimos el botón go back. Reestablece la variable window a valor = 0
+        self.btn_back.draw(self.screen, self.functions['go_back'])
+
+        # Imprimimos los creditos
+        self.print_credits()
+    
+    def print_credits(self):
+
+        # Añadimos creditos de música
+        self.music          =   retro_font.render("Music by:", True, WHITE)
+        self.music_author   =   retro_font_btn.render("CoreDumbs", True, WHITE)
+
+        self.music_rect     =   self.music.get_rect(center=(WINDOW_WIDTH/2,60))
+        self.music_author_r =   self.music_author.get_rect(center=(WINDOW_WIDTH/2,120))
+
+        self.screen.blit(self.music, self.music_rect)
+        self.screen.blit(self.music_author, self.music_author_r)
+
+        # Añadimos créditos de animación
+        self.anim           =   retro_font.render("Animation by:", True, WHITE)
+        self.anim_author    =   retro_font_btn.render("CoreDumbs", True, WHITE)
+
+        self.anim_rect      =   self.anim.get_rect(center=(WINDOW_WIDTH/2,220))
+        self.anim_author_r  =   self.anim_author.get_rect(center=(WINDOW_WIDTH/2,280))
+
+        self.screen.blit(self.anim, self.anim_rect)
+        self.screen.blit(self.anim_author, self.anim_author_r)
+
+        # Añadimos autor
+        self.author_text =   retro_font.render("Author:", True, WHITE)
+        self.name_text   =   retro_font_btn.render("CoreDumbs", True, WHITE)
+        
+        self.author_rect =   self.author_text.get_rect(center=(WINDOW_WIDTH/2,380))
+        self.name_rect   =   self.name_text.get_rect(center=(WINDOW_WIDTH/2,440))
+        
+        self.screen.blit(self.author_text, self.author_rect)
+        self.screen.blit(self.name_text, self.name_rect)
+
+
+
+
+
+
+
+
+

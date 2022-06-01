@@ -32,8 +32,14 @@ def credits_fnc():
     global window
     window = 3
 
-init_fncs = {'start':start_fnc, 'tutorial':tutorial_fnc, 
+def go_back():
+    global window 
+    window = 0
+
+init_fncs   = {'start':start_fnc, 'tutorial':tutorial_fnc, 
                 'settings':settings_fnc, 'credits':credits_fnc}
+
+credit_fncs = {'go_back': go_back}
 
 # Función main para establecer la configuración de la pantalla, caption, icono, etc
 def main():
@@ -50,7 +56,8 @@ def main_loop():
 
     screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 
-    init_window = Init_Window(screen,init_fncs)
+    init_window     = Init_Window(screen,init_fncs)
+    credits_window  = Credits_Window(screen,credit_fncs)
 
     while True:
 
@@ -67,7 +74,7 @@ def main_loop():
         elif window == 2:
             pass
         elif window == 3:
-            pass
+            credits_window.draw()
         elif window == 4:
             pass
             
