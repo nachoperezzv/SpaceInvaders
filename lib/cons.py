@@ -1,5 +1,4 @@
 import pygame, os 
-from lib.widgets import loc_params
 
 # Tamaños de la ventana del juego
 WINDOW_WIDTH    =   900
@@ -43,6 +42,12 @@ retro_font      =   pygame.font.Font(RETRO_FONT_PATH,16)
 retro_font_btn  =   pygame.font.Font(RETRO_FONT_PATH,36)
 retro_font_title=   pygame.font.Font(RETRO_FONT_PATH,48)
 
+class Fonts():
+    def __init__(self):
+        self.retro_font     = retro_font
+        self.retro_font_btn = retro_font_btn
+        self.retro_font_title=retro_font_title
+
 # Colores
 INIT_ALPHA      =   [75,75,75,150]
 BLACK           =   [0,0,0]
@@ -50,7 +55,15 @@ SOFT_BLACK      =   [25,25,25]
 WHITE           =   [255,255,255]
 GREY            =   [175,175,175]
 LIGHT_GREY      =   [195,195,195]
+SOFT_LIGHT      =   [225,225,225]
 
+
+class loc_params:
+    def __init__(self,left,top,width,height):
+        self.left   = left
+        self.top    = top
+        self.width  = width
+        self.height = height
 
 # Parámetros de los botones 
 BTN_START_LOC   =   loc_params(325,170,250,50)
@@ -58,3 +71,10 @@ BTN_TUTORIAL_LOC=   loc_params(325,240,250,50)
 BTN_SETTINGS_LOC=   loc_params(325,310,250,50)
 BTN_CREDITS_LOC =   loc_params(325,370,250,50)
 BTN_GO_BACK     =   loc_params(830,50, 30, 30)
+
+# Parámetros de los sliders 
+BAR_MUSIC       =   loc_params(325,280,250,10)
+SLD_MUSIC       =   loc_params(325,270,20, 30)
+
+BAR_EFFECTS     =   loc_params(325,480,250,10)
+SLD_EFFECTS     =   loc_params(325,470,20,30)

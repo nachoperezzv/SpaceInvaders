@@ -1,3 +1,5 @@
+from lib.features import *
+
 import pygame, sys
 
 # -------------------
@@ -41,6 +43,8 @@ init_fncs   = {'start':start_fnc, 'tutorial':tutorial_fnc,
 
 credit_fncs = {'go_back': go_back}
 
+config_fncs = {'go_back': go_back}
+
 # Función main para establecer la configuración de la pantalla, caption, icono, etc
 def main():
     pygame.init()
@@ -58,6 +62,7 @@ def main_loop():
 
     init_window     = Init_Window(screen,init_fncs)
     credits_window  = Credits_Window(screen,credit_fncs)
+    settings_window = Settings_Window(screen,config_fncs)
 
     while True:
 
@@ -67,15 +72,15 @@ def main_loop():
                 sys.exit()
 
         #TODO: Añadir movimiento ligero al fondo para crear dinamismo
-        if window == 0:
+        if window == 0:         # Init window
             init_window.draw()
-        elif window == 1:
+        elif window == 1:       # Tutorial window
             pass
-        elif window == 2:
-            pass
-        elif window == 3:
+        elif window == 2:       # Settings window
+            settings_window.draw()
+        elif window == 3:       # Credits window
             credits_window.draw()
-        elif window == 4:
+        elif window == 4:       # Play window
             pass
             
 
@@ -83,15 +88,5 @@ def main_loop():
         pygame.display.flip()
 
 
-# Solo en caso de que se pretenda lanzar todo sin el main principal por comodidad
-# El acceso a las librerias es diferente si se hace desde el main principal o desde el directorio
-# lib. Por ello se importan las librerías en función de donde se compile el programa.
-if __name__ == '__main__':
-    from cons import *
-    from features import *
-    from widgets import *
-    main()
-else:
-    from lib.cons import *
-    from lib.features import *
-    from lib.widgets import *
+
+    
