@@ -15,7 +15,8 @@ class Button:
                     font, elevation=3, 
                     text_color=[255,255,255],
                     btn_color_on=[195,195,195], btn_color_off=[175,175,175],
-                    btn_color_bg=[25,25,25]
+                    btn_color_bg=[25,25,25],
+                    border_radius = 6
                 ):
 
         #Core attributes 
@@ -28,7 +29,7 @@ class Button:
         self.color_on           = btn_color_on
         self.color_off          = btn_color_off
         self.color_bg           = btn_color_bg
-
+        self.border_radius      = border_radius
         # top rectangle 
         self.top_rect = pygame.Rect(self.pos,(self.width,self.height))
         self.top_color = self.color_off
@@ -48,8 +49,8 @@ class Button:
         self.bottom_rect.midtop = self.top_rect.midtop
         self.bottom_rect.height = self.top_rect.height + self.dynamic_elecation
 
-        pygame.draw.rect(screen,self.bottom_color, self.bottom_rect,border_radius = 6)
-        pygame.draw.rect(screen,self.top_color, self.top_rect,border_radius = 6)
+        pygame.draw.rect(screen,self.bottom_color, self.bottom_rect,border_radius = self.border_radius)
+        pygame.draw.rect(screen,self.top_color, self.top_rect,border_radius = self.border_radius)
         screen.blit(self.text_surf, self.text_rect)
         self.check_click(function)
 

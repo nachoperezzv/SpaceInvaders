@@ -72,6 +72,8 @@ BTN_SETTINGS_LOC=   loc_params(325,310,250,50)
 BTN_CREDITS_LOC =   loc_params(325,370,250,50)
 BTN_GO_BACK     =   loc_params(830,50, 30, 30)
 
+BTN_SELECT_SPACESHIP = loc_params(375,300,150,150)
+
 # Parámetros de los sliders 
 BAR_MUSIC       =   loc_params(325,280,250,10)
 SLD_MUSIC       =   loc_params(555,270,20, 30)

@@ -49,9 +49,89 @@ class Init_Window():
         self.btn_settings.draw(self.screen,self.functions['settings'])
         self.btn_credits.draw(self.screen,self.functions['credits'])
 
-class Play_Window():
-    def __init__(self):
+
+class Display_Selection():
+    def __init__(self,screen):
+        self.screen = screen
+
+    def draw(self):
         pass
+
+
+class Play_Window():
+    def __init__(self,screen,fncs):
+
+        self.screen     =   screen
+        self.functions  =   fncs
+
+        # Cambiamos el fondo
+        # Fondo predeterminado, que es el mismo que el del nivel 1
+        self.bg      =   pygame.image.load(BG1)
+        self.bg_rect =   self.bg.get_rect()
+
+        # Lo oscurecemos un poco con un fondo en alpha de la misma imagen superpuesto
+        self.alpha   =   self.bg.convert_alpha()
+        self.al_rect =   self.alpha.get_rect()
+        self.alpha.fill(INIT_ALPHA)
+
+        # Inicializamos las fuentes
+        pygame.font.init()
+        self.fonts = Fonts()
+
+        # Titulo de PLAY e indicación de click donde sea para comenzar a jugar
+        self.title_text =   self.fonts.retro_font_title.render("START PLAYING", True, WHITE)
+        self.title_rect =   self.title_text.get_rect(center=(WINDOW_WIDTH/2,100))
+        
+        self.click_text =   self.fonts.retro_font.render("Click para empezar !!", True, WHITE)
+        self.click_rect =   self.click_text.get_rect(center=(WINDOW_WIDTH/2,150))
+
+        # Botón de vuelta atrás
+        self.btn_back   =   Button("<-", BTN_GO_BACK, self.fonts.retro_font)
+
+        # Botón de selección de nave
+        self.btn_select =   Button("",BTN_SELECT_SPACESHIP, self.fonts.retro_font,border_radius=3)
+
+        # Cuando pulsemos el botón de selección de nave espacial esta variable
+        # pasará a tener valor True y nos mostrará todas las opciones posibles
+        self.spaceship_selection = False
+
+        # Inicialización de la pantalla de selección
+        self.display_selection = Display_Selection(self.screen)
+
+        # Esta variable guarda que nave usaremos para jugar.
+        # Por defecto se juega con la número 1
+        self.spaceship  =   1
+
+    def draw(self):
+
+        # Actualización del fondo para pasar de la pantalla inicial a la de creditos
+        self.screen.blit(self.bg,self.bg_rect)
+        self.screen.blit(self.alpha,self.al_rect)
+
+        # Imprimimos el botón go back. Reestablece la variable window a valor = 0
+        self.btn_back.draw(self.screen, self.functions['go_back'])
+
+        # Printeamos los titulos e indicaciones
+        self.screen.blit(self.title_text,self.title_rect)
+        self.screen.blit(self.click_text,self.click_rect)
+
+        if self.spaceship_selection == False:
+            # Printeamos el botón de selección de personaje
+            self.btn_select.draw(self.screen, self.spaceship_selection)
+        
+        else:
+            # Printeamos pantalla de selección de nave
+            # Cuando hayamos seleccionado una nos devolverá el número de nave elegida
+            # y pondrá el valor de spaceship_selection a False de nuevo
+            self.spaceship_selection, self.spaceship = self.display_selection_window()
+    
+    def select_spaceship(self):
+        self.spaceship_selection = True
+    
+    def display_selection_window(self):
+        self.display_selection.draw()
+        
+
 
 class Tutorial_Window():
     def __init__(self):
