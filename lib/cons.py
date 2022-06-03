@@ -74,7 +74,7 @@ BTN_GO_BACK     =   loc_params(830,50, 30, 30)
 
 # Parámetros de los sliders 
 BAR_MUSIC       =   loc_params(325,280,250,10)
-SLD_MUSIC       =   loc_params(325,270,20, 30)
+SLD_MUSIC       =   loc_params(555,270,20, 30)
 
 BAR_EFFECTS     =   loc_params(325,480,250,10)
-SLD_EFFECTS     =   loc_params(325,470,20,30)
+SLD_EFFECTS     =   loc_params(555,470,20,30)

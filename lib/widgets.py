@@ -120,8 +120,8 @@ class Slider():
             mx,my = pygame.mouse.get_pos()
 
             if ( # se añade un +- 5 para que tenga holgura al clickar sobre una posición de la barra
-                mx > self.left_bar and mx < (self.left_bar + self.width_bar) and 
-                my > self.top_bar - 5  and my < (self.top_bar  + self.height_bar) + 5
+                mx >= self.left_bar and mx <= (self.left_bar + self.width_bar - self.width_slide) and 
+                my >= self.top_bar - 50  and my <= (self.top_bar  + self.height_bar) + 50
             ):
                 # La nueva posición del top de bar vendrá dada por la posición mx
                 # del mouse
@@ -131,11 +131,11 @@ class Slider():
                 self.slider =   pygame.Rect(self.left_slide,self.top_slide,
                                     self.width_slide,self.height_slide)
 
-                self.slider_mark   =   str(int((self.left_bar - self.left_slide)/(self.width_slide+self.left_slide) * (self.first/self.last)))
-                #self.mark = str(int(self.div*((self.mark-self.bar_pos[0]+5)/self.bar_width)) + int(self.offset))
-
+        
         pygame.draw.rect(self.screen, self.bar_color, self.bar)
         pygame.draw.rect(self.screen, self.slider_color, self.slider)
+
+        self.slider_mark   =   str(int((self.left_slide-self.left_bar)/(self.width_bar-self.width_slide) * (self.last) + self.first))
 
         mark_text   = self.font.render(str(self.slider_mark), True, [255,255,255])
         mark_rect   = mark_text.get_rect(center=(WINDOW_WIDTH/2,(self.top_bar + self.height_bar)+30))
