@@ -14,6 +14,8 @@ import pygame, sys
 # Por poner: niveles
 window      =   0
 
+# Variable global para la selección de la nave
+spaceship_selection_display = False
 
 # -------------------
 # Funciones botones  |
@@ -38,6 +40,14 @@ def go_back():
     global window 
     window = 0
 
+def go_back_spaceship_selected():
+    global spaceship_selection_display
+    spaceship_selection_display = False 
+
+def select_spaceship():
+    global spaceship_selection_display
+    spaceship_selection_display = True
+
 init_fncs   = {'start':start_fnc, 'tutorial':tutorial_fnc, 
                 'settings':settings_fnc, 'credits':credits_fnc}
 
@@ -45,7 +55,8 @@ credit_fncs = {'go_back': go_back}
 
 config_fncs = {'go_back': go_back}
 
-play_fncs   = {'go_back': go_back}
+play_fncs   = {'go_back': go_back, 'select_spaceship': select_spaceship,
+                'spaceship_selected_btn_go_back':go_back_spaceship_selected}
 
 # Función main para establecer la configuración de la pantalla, caption, icono, etc
 def main():
@@ -58,12 +69,12 @@ def main():
 # Creación de loop infinito mientras que no se cierre la aplicación o se decida 
 # salir del juego
 def main_loop():
-    global window
+    global window, spaceship_selection_display
 
     screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 
     init_window     =   Init_Window(screen,init_fncs)
-    play_window     =   Play_Window(screen,play_fncs)
+    play_window     =   Play_Window(screen,spaceship_selection_display,play_fncs)
     credits_window  =   Credits_Window(screen,credit_fncs)
     settings_window =   Settings_Window(screen,config_fncs)
 
@@ -88,7 +99,7 @@ def main_loop():
             credits_window.draw()
 
         elif window == 4:       # Play window
-            play_window.draw()
+            play_window.draw(spaceship_selection_display)
             
 
         

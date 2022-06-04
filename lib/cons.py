@@ -56,6 +56,7 @@ WHITE           =   [255,255,255]
 GREY            =   [175,175,175]
 LIGHT_GREY      =   [195,195,195]
 SOFT_LIGHT      =   [225,225,225]
+YELLOW          =   [229,190,1]
 
 
 class loc_params:
@@ -80,3 +81,4 @@ SLD_MUSIC       =   loc_params(555,270,20, 30)
 
 BAR_EFFECTS     =   loc_params(325,480,250,10)
 SLD_EFFECTS     =   loc_params(555,470,20,30)
+

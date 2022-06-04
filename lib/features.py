@@ -1,3 +1,4 @@
+from turtle import left
 from lib.widgets import *
 
 import pygame
@@ -51,15 +52,85 @@ class Init_Window():
 
 
 class Display_Selection():
-    def __init__(self,screen):
-        self.screen = screen
+    def __init__(self,screen, fncs):
+        
+        # Guardamos la pantalla para tener una copia de ella y de las funciones
+        self.screen     = screen
+        self.functions  = fncs
+
+        # Inicializamos las fuentes
+        self.fonts      =   Fonts()
+       
+        # Definición del borde que se utilizará para la pantalla de selección
+        self.border      =  pygame.Rect(30,30,840,540) 
+
+        # Creación del botón go_back de la pantalla de selección de la nave espacial
+        # Botón de vuelta atrás
+        self.btn_back   =   Button("<-", BTN_GO_BACK, self.fonts.retro_font)
+
+        # Definimos los botones para seleccionar una nave u otra
+        self.s1         =   pygame.image.load(SHIP1)
+        self.s1_rect    =   self.s1.get_rect(left=250,top=165)
+
+        self.s2         =   pygame.image.load(SHIP2)
+        self.s2_rect    =   self.s2.get_rect(left=425,top=150)
+
+        self.s3         =   pygame.image.load(SHIP3)
+        self.s3_rect    =   self.s3.get_rect(left=600,top=150)
+
+        # ----
+
+        self.s4         =   pygame.image.load(SHIP4)
+        self.s4_rect    =   self.s4.get_rect(left=250,top=300)
+
+        self.s5         =   pygame.image.load(SHIP5)
+        self.s5_rect    =   self.s5.get_rect(left=425,top=300)
+
+        self.s6         =   pygame.image.load(SHIP6)
+        self.s6_rect    =   self.s6.get_rect(left=600,top=315)
+        
+        # ----
+        
+        self.s7         =   pygame.image.load(SHIP7)
+        self.s7_rect    =   self.s7.get_rect(left=250,top=450)
+
+        self.s8         =   pygame.image.load(SHIP8)
+        self.s8_rect    =   self.s8.get_rect(left=425,top=450)
+
+        self.s9         =   pygame.image.load(SHIP9)
+        self.s9_rect    =   self.s9.get_rect(left=600,top=450)
 
     def draw(self):
-        pass
+        # Añadimos un fondo, en este caso será diferente a los demás
+        self.screen.fill(YELLOW)
+
+        # Dibujamos también un marco con color soft grey
+        pygame.draw.rect(self.screen, LIGHT_GREY, self.border, width=5, border_radius=5)
+
+        # Titulo de la ventana
+        select_text =   self.fonts.retro_font_title.render("Choose your spaceship !",True,WHITE)
+        select_rect =   select_text.get_rect(center=(WINDOW_WIDTH/2 - 10,70))
+        self.screen.blit(select_text,select_rect)
+
+        # Imprimimos los botones
+        self.btn_back.draw(self.screen, self.functions['spaceship_selected_btn_go_back'])
+
+        # Las imagenes que van superpuestas a los botones
+        self.screen.blit(self.s1,self.s1_rect)
+        self.screen.blit(self.s2,self.s2_rect)
+        self.screen.blit(self.s3,self.s3_rect)
+        self.screen.blit(self.s4,self.s4_rect)
+        self.screen.blit(self.s5,self.s5_rect)
+        self.screen.blit(self.s6,self.s6_rect)
+        self.screen.blit(self.s7,self.s7_rect)
+        self.screen.blit(self.s8,self.s8_rect)
+        self.screen.blit(self.s9,self.s9_rect)
+
+        return 0
 
 
 class Play_Window():
-    def __init__(self,screen,fncs):
+    def __init__(self,screen,SS,fncs):
 
         self.screen     =   screen
         self.functions  =   fncs
@@ -89,47 +160,52 @@ class Play_Window():
         self.btn_back   =   Button("<-", BTN_GO_BACK, self.fonts.retro_font)
 
         # Botón de selección de nave
-        self.btn_select =   Button("",BTN_SELECT_SPACESHIP, self.fonts.retro_font,border_radius=3)
+        self.btn_select =   Button("SPACESHIPS",BTN_SELECT_SPACESHIP, self.fonts.retro_font,border_radius=3)
 
         # Cuando pulsemos el botón de selección de nave espacial esta variable
         # pasará a tener valor True y nos mostrará todas las opciones posibles
-        self.spaceship_selection = False
+        self.spaceship_selection = SS
 
         # Inicialización de la pantalla de selección
-        self.display_selection = Display_Selection(self.screen)
+        self.display_selection = Display_Selection(self.screen, self.functions)
 
         # Esta variable guarda que nave usaremos para jugar.
         # Por defecto se juega con la número 1
         self.spaceship  =   1
 
-    def draw(self):
+    def draw(self,SS):
+        
+        # SS es la variable del fichero main.py que es igual al valor 
+        # de spaceship_selection
 
-        # Actualización del fondo para pasar de la pantalla inicial a la de creditos
-        self.screen.blit(self.bg,self.bg_rect)
-        self.screen.blit(self.alpha,self.al_rect)
-
-        # Imprimimos el botón go back. Reestablece la variable window a valor = 0
-        self.btn_back.draw(self.screen, self.functions['go_back'])
-
-        # Printeamos los titulos e indicaciones
-        self.screen.blit(self.title_text,self.title_rect)
-        self.screen.blit(self.click_text,self.click_rect)
+        # En función del estado de la variable se printea una cosa o la otra    
+        self.spaceship_selection = SS
 
         if self.spaceship_selection == False:
+            # Actualización del fondo para pasar de la pantalla inicial a la de creditos
+            self.screen.blit(self.bg,self.bg_rect)
+            self.screen.blit(self.alpha,self.al_rect)
+
+            # Imprimimos el botón go back. Reestablece la variable window a valor = 0
+            self.btn_back.draw(self.screen, self.functions['go_back'])
+
+            # Printeamos los titulos e indicaciones
+            self.screen.blit(self.title_text,self.title_rect)
+            self.screen.blit(self.click_text,self.click_rect)
+
             # Printeamos el botón de selección de personaje
-            self.btn_select.draw(self.screen, self.spaceship_selection)
-        
+            self.btn_select.draw(self.screen, self.functions['select_spaceship'])
+
         else:
             # Printeamos pantalla de selección de nave
             # Cuando hayamos seleccionado una nos devolverá el número de nave elegida
             # y pondrá el valor de spaceship_selection a False de nuevo
-            self.spaceship_selection, self.spaceship = self.display_selection_window()
+            self.spaceship = self.display_selection.draw()
+
     
-    def select_spaceship(self):
-        self.spaceship_selection = True
     
-    def display_selection_window(self):
-        self.display_selection.draw()
+    
+  
         
 
 
