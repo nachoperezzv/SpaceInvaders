@@ -68,6 +68,17 @@ class Display_Selection():
         # Botón de vuelta atrás
         self.btn_back   =   Button("<-", BTN_GO_BACK, self.fonts.retro_font)
 
+        # Botones de selección de naves
+        self.btn_s1     =   Button("", BTN_S1, self.fonts.retro_font,1,btn_color_off=LIGHT_GREY,btn_color_on=SOFT_LIGHT)
+        self.btn_s2     =   Button("", BTN_S2, self.fonts.retro_font,1,btn_color_off=LIGHT_GREY,btn_color_on=SOFT_LIGHT)
+        self.btn_s3     =   Button("", BTN_S3, self.fonts.retro_font,1,btn_color_off=LIGHT_GREY,btn_color_on=SOFT_LIGHT)
+        self.btn_s4     =   Button("", BTN_S4, self.fonts.retro_font,1,btn_color_off=LIGHT_GREY,btn_color_on=SOFT_LIGHT)
+        self.btn_s5     =   Button("", BTN_S5, self.fonts.retro_font,1,btn_color_off=LIGHT_GREY,btn_color_on=SOFT_LIGHT)
+        self.btn_s6     =   Button("", BTN_S6, self.fonts.retro_font,1,btn_color_off=LIGHT_GREY,btn_color_on=SOFT_LIGHT)
+        self.btn_s7     =   Button("", BTN_S7, self.fonts.retro_font,1,btn_color_off=LIGHT_GREY,btn_color_on=SOFT_LIGHT)
+        self.btn_s8     =   Button("", BTN_S8, self.fonts.retro_font,1,btn_color_off=LIGHT_GREY,btn_color_on=SOFT_LIGHT)
+        self.btn_s9     =   Button("", BTN_S9, self.fonts.retro_font,1,btn_color_off=LIGHT_GREY,btn_color_on=SOFT_LIGHT)
+
         # Definimos los botones para seleccionar una nave u otra
         self.s1         =   pygame.image.load(SHIP1)
         self.s1_rect    =   self.s1.get_rect(left=250,top=165)
@@ -100,6 +111,16 @@ class Display_Selection():
         self.s9         =   pygame.image.load(SHIP9)
         self.s9_rect    =   self.s9.get_rect(left=600,top=450)
 
+        self.ships      =   {1:self.btn_s1, 2:self.btn_s2, 3:self.btn_s3,
+                             4:self.btn_s4, 5:self.btn_s5, 6:self.btn_s6,
+                             7:self.btn_s7, 8:self.btn_s8, 9:self.btn_s9}
+
+        # Spaceship selected. Default = 1
+        self.spaceship_selected = 1
+    
+    def select_SS():
+        pass
+
     def draw(self):
         # Añadimos un fondo, en este caso será diferente a los demás
         self.screen.fill(YELLOW)
@@ -114,6 +135,19 @@ class Display_Selection():
 
         # Imprimimos los botones
         self.btn_back.draw(self.screen, self.functions['spaceship_selected_btn_go_back'])
+        self.btn_s1.draw(self.screen, self.select_SS)
+        self.btn_s2.draw(self.screen, self.select_SS)
+        self.btn_s3.draw(self.screen, self.select_SS)
+        self.btn_s4.draw(self.screen, self.select_SS)
+        self.btn_s5.draw(self.screen, self.select_SS)
+        self.btn_s6.draw(self.screen, self.select_SS)
+        self.btn_s7.draw(self.screen, self.select_SS)
+        self.btn_s8.draw(self.screen, self.select_SS)
+        self.btn_s9.draw(self.screen, self.select_SS)
+
+        # Rellenamos la superficie del botón de la nave que este seleccionada
+        surf = pygame.Surface((self.ships[self.spaceship_selected].width,self.ships[self.spaceship_selected].height))
+        surf.fill(BLUE)
 
         # Las imagenes que van superpuestas a los botones
         self.screen.blit(self.s1,self.s1_rect)
