@@ -1,5 +1,5 @@
-from turtle import left
 from lib.widgets import *
+
 
 import pygame
 
@@ -58,6 +58,16 @@ class Display_Selection():
         self.screen     = screen
         self.functions  = fncs
 
+        # Mantenemos fondo
+        # Fondo predeterminado, que es el mismo que el del nivel 1
+        self.bg      =   pygame.image.load(BG1)
+        self.bg_rect =   self.bg.get_rect()
+
+        # Lo oscurecemos un poco con un fondo en alpha de la misma imagen superpuesto
+        self.alpha   =   self.bg.convert_alpha()
+        self.al_rect =   self.alpha.get_rect()
+        self.alpha.fill(INIT_ALPHA)
+
         # Inicializamos las fuentes
         self.fonts      =   Fonts()
        
@@ -111,19 +121,27 @@ class Display_Selection():
         self.s9         =   pygame.image.load(SHIP9)
         self.s9_rect    =   self.s9.get_rect(left=600,top=450)
 
-        self.ships      =   {1:self.btn_s1, 2:self.btn_s2, 3:self.btn_s3,
-                             4:self.btn_s4, 5:self.btn_s5, 6:self.btn_s6,
-                             7:self.btn_s7, 8:self.btn_s8, 9:self.btn_s9}
+        self.ships      =   [self.btn_s1, self.btn_s2, self.btn_s3,
+                             self.btn_s4, self.btn_s5, self.btn_s6,
+                             self.btn_s7, self.btn_s8, self.btn_s9]
 
         # Spaceship selected. Default = 1
         self.spaceship_selected = 1
     
-    def select_SS():
-        pass
+    def select_S1(self): self.spaceship_selected = 1
+    def select_S2(self): self.spaceship_selected = 2
+    def select_S3(self): self.spaceship_selected = 3
+    def select_S4(self): self.spaceship_selected = 4
+    def select_S5(self): self.spaceship_selected = 5
+    def select_S6(self): self.spaceship_selected = 6
+    def select_S7(self): self.spaceship_selected = 7
+    def select_S8(self): self.spaceship_selected = 8
+    def select_S9(self): self.spaceship_selected = 9
 
     def draw(self):
-        # Añadimos un fondo, en este caso será diferente a los demás
-        self.screen.fill(YELLOW)
+        # Se printea otra vez el fondo para enmascarar los titulos de la anterior ventana
+        self.screen.blit(self.bg,self.bg_rect)
+        self.screen.blit(self.alpha,self.al_rect)
 
         # Dibujamos también un marco con color soft grey
         pygame.draw.rect(self.screen, LIGHT_GREY, self.border, width=5, border_radius=5)
@@ -135,19 +153,25 @@ class Display_Selection():
 
         # Imprimimos los botones
         self.btn_back.draw(self.screen, self.functions['spaceship_selected_btn_go_back'])
-        self.btn_s1.draw(self.screen, self.select_SS)
-        self.btn_s2.draw(self.screen, self.select_SS)
-        self.btn_s3.draw(self.screen, self.select_SS)
-        self.btn_s4.draw(self.screen, self.select_SS)
-        self.btn_s5.draw(self.screen, self.select_SS)
-        self.btn_s6.draw(self.screen, self.select_SS)
-        self.btn_s7.draw(self.screen, self.select_SS)
-        self.btn_s8.draw(self.screen, self.select_SS)
-        self.btn_s9.draw(self.screen, self.select_SS)
+        self.btn_s1.draw(self.screen, self.select_S1)
+        self.btn_s2.draw(self.screen, self.select_S2)
+        self.btn_s3.draw(self.screen, self.select_S3)
+        self.btn_s4.draw(self.screen, self.select_S4)
+        self.btn_s5.draw(self.screen, self.select_S5)
+        self.btn_s6.draw(self.screen, self.select_S6)
+        self.btn_s7.draw(self.screen, self.select_S7)
+        self.btn_s8.draw(self.screen, self.select_S8)
+        self.btn_s9.draw(self.screen, self.select_S9)
 
         # Rellenamos la superficie del botón de la nave que este seleccionada
-        surf = pygame.Surface((self.ships[self.spaceship_selected].width,self.ships[self.spaceship_selected].height))
-        surf.fill(BLUE)
+        #self.ships[self.spaceship_selected].color_off = BLUE
+        for i,s in enumerate(self.ships,1):
+            if i == self.spaceship_selected:
+                s.color_on  = [85,100,235]
+                s.color_off = [64,64,255]
+            else:
+                s.color_on  = [195,195,195]
+                s.color_off = [175,175,175]
 
         # Las imagenes que van superpuestas a los botones
         self.screen.blit(self.s1,self.s1_rect)
@@ -235,13 +259,6 @@ class Play_Window():
             # Cuando hayamos seleccionado una nos devolverá el número de nave elegida
             # y pondrá el valor de spaceship_selection a False de nuevo
             self.spaceship = self.display_selection.draw()
-
-    
-    
-    
-  
-        
-
 
 class Tutorial_Window():
     def __init__(self):

@@ -54,7 +54,7 @@ class Button:
         screen.blit(self.text_surf, self.text_rect)
         self.check_click(function)
 
-    def check_click(self, function):
+    def check_click(self, function,kwargs=None):
         mouse_pos = pygame.mouse.get_pos()
         if self.top_rect.collidepoint(mouse_pos):
             self.top_color = self.color_on
@@ -64,7 +64,10 @@ class Button:
             else:
                 self.dynamic_elecation = self.elevation
                 if self.pressed == True:
-                    function()
+                    if kwargs == None:
+                        function()
+                    else:
+                        function(**kwargs)
                     self.pressed = False
         else:
             self.dynamic_elecation = self.elevation
@@ -121,18 +124,24 @@ class Slider():
             mx,my = pygame.mouse.get_pos()
 
             if ( # se añade un +- 5 para que tenga holgura al clickar sobre una posición de la barra
-                mx >= self.left_bar and mx <= (self.left_bar + self.width_bar - self.width_slide) and 
+                mx >= self.left_bar -50 and mx <= (self.left_bar + self.width_bar - self.width_slide + 50) and 
                 my >= self.top_bar - 50  and my <= (self.top_bar  + self.height_bar) + 50
             ):
                 # La nueva posición del top de bar vendrá dada por la posición mx
                 # del mouse
-                self.left_slide = mx
+                if mx > (self.left_bar + self.width_bar):
+                    self.left_slide = self.left_bar + self.width_bar - self.width_slide
+                elif mx < (self.left_bar):
+                    self.left_slide = self.left_bar
+                else:
+                    self.left_slide = mx
 
                 # Cambio en los parámetros del slider, la barra es fija             
                 self.slider =   pygame.Rect(self.left_slide,self.top_slide,
                                     self.width_slide,self.height_slide)
 
         
+        # Se dibujan la barra fija y movil del slider
         pygame.draw.rect(self.screen, self.bar_color, self.bar)
         pygame.draw.rect(self.screen, self.slider_color, self.slider)
 
