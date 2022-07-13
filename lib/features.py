@@ -1,7 +1,8 @@
 from lib.widgets import *
-
+from lib.characters import *
 
 import pygame
+import math
 
 class Init_Window():
 
@@ -147,7 +148,7 @@ class Display_Selection():
         pygame.draw.rect(self.screen, LIGHT_GREY, self.border, width=5, border_radius=5)
 
         # Titulo de la ventana
-        select_text =   self.fonts.retro_font_title.render("Choose your spaceship !",True,WHITE)
+        select_text =   self.fonts.retro_font_title.render("Elige tu nave espacial !",True,WHITE)
         select_rect =   select_text.get_rect(center=(WINDOW_WIDTH/2 - 10,70))
         self.screen.blit(select_text,select_rect)
 
@@ -211,7 +212,7 @@ class Play_Window():
         self.title_text =   self.fonts.retro_font_title.render("START PLAYING", True, WHITE)
         self.title_rect =   self.title_text.get_rect(center=(WINDOW_WIDTH/2,100))
         
-        self.click_text =   self.fonts.retro_font.render("Click para empezar !!", True, WHITE)
+        self.click_text =   self.fonts.retro_font.render("Pulsa para empezar !!", True, WHITE)
         self.click_rect =   self.click_text.get_rect(center=(WINDOW_WIDTH/2,150))
 
         # Botón de vuelta atrás
@@ -240,7 +241,7 @@ class Play_Window():
         self.spaceship_selection = SS
 
         if self.spaceship_selection == False:
-            # Actualización del fondo para pasar de la pantalla inicial a la de creditos
+            # Actualización del fondo para pasar de la pantalla inicial a la de juego
             self.screen.blit(self.bg,self.bg_rect)
             self.screen.blit(self.alpha,self.al_rect)
 
@@ -261,8 +262,69 @@ class Play_Window():
             self.spaceship = self.display_selection.draw()
 
 class Tutorial_Window():
-    def __init__(self):
-        pass
+    def __init__(self,screen, fncs):
+        
+        # Guardamos la variable de la pantalla sobre la que dibujamos
+        self.screen     = screen
+        self.functions  = fncs
+
+        # Inicializamos las fuentes
+        pygame.font.init()
+        self.fonts = Fonts()
+
+        # Para empezar el tutorial se tiene que presionar una tecla
+        self.click_text =   self.fonts.retro_font.render("Esto son los comandos que debes usar !!", True, WHITE)
+        self.click_rect =   self.click_text.get_rect(center=(WINDOW_WIDTH/2,150))
+
+        self.start_tutorial = False
+
+        # Fondo predeterminado, que es el mismo que el del nivel 1
+        self.bg      =   pygame.image.load(BG1)
+        self.bg_rect =   self.bg.get_rect()
+
+        # Imagenes de teclas que se van a usar
+        self.qw_key         =   pygame.image.load(QW_KEY).convert_alpha()
+        self.qw_key_rect    =   self.qw_key.get_rect(center=(250,WINDOW_HEIGHT/2))
+        self.space_key      =   pygame.image.load(SPACE_KEY).convert_alpha()
+        self.space_key_rect =   self.space_key.get_rect(center=(450, WINDOW_HEIGHT/2))
+        self.mouse          =   pygame.image.load(MOUSE).convert_alpha()
+        self.mouse_rect     =   self.mouse.get_rect(center=(650,WINDOW_HEIGHT/2))
+
+        self.mouse_angle    =   0
+
+        
+        # Lo oscurecemos un poco con un fondo en alpha de la misma imagen superpuesto
+        self.alpha   =   self.bg.convert_alpha()
+        self.al_rect =   self.alpha.get_rect()
+        self.alpha.fill(INIT_ALPHA)
+
+        # Botón de vuelta atrás
+        self.btn_back   =   Button("<-", BTN_GO_BACK, self.fonts.retro_font)
+
+        
+    def draw(self):
+        # Actualización del fondo para pasar de la pantalla inicial a la de juego
+        self.screen.blit(self.bg,self.bg_rect)
+
+        # Se imprime el botón de vuelta atrás 
+        self.screen.blit(self.alpha,self.al_rect)
+        self.btn_back.draw(self.screen, self.functions['go_back'])
+        self.screen.blit(self.click_text,self.click_rect)
+        
+        # Imprimimos las imagenes y hacemos que el ratón gire
+        self.screen.blit(self.qw_key, self.qw_key_rect)
+        self.screen.blit(self.space_key, self.space_key_rect)
+
+        mx, my = pygame.mouse.get_pos()
+
+        self.mouse_angle = int(math.degrees(math.atan2(self.mouse_rect.x-mx,self.mouse_rect.y-my)))
+        # self.mouse_angle = math.atan2(self.mouse_rect.y-my,self.mouse_rect.x-mx)
+
+        self.mouse_rot = pygame.transform.rotate(self.mouse, self.mouse_angle)
+        self.mouse_rect = self.mouse.get_rect(center=(650,WINDOW_HEIGHT/2))
+
+        self.screen.blit(self.mouse_rot, self.mouse_rect)
+
 
 class Settings_Window():
     def __init__(self,screen,fncs):

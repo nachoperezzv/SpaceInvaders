@@ -25,6 +25,11 @@ SHIP7           =   SPACESHIPS_PATH + "/spaceship7.png"
 SHIP8           =   SPACESHIPS_PATH + "/spaceship8.png"
 SHIP9           =   SPACESHIPS_PATH + "/spaceship9.png"
 
+# Path de las imagenes para las teclas que se emplean - Tutorial
+QW_KEY          =   ICONS + "/keys/QW_KEY.png"
+SPACE_KEY       =   ICONS + "/keys/SPACE_KEY.png"
+MOUSE           =   ICONS + "/keys/MOUSE3.png"
+
 #TODO: Aumentar a 920x620 el tamaño de las imagenes de fondo
 # Iconos background
 BG_PATH         =   ICONS + "/spaceBackground"

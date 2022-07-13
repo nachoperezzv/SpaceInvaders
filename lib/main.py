@@ -17,6 +17,8 @@ window      =   0
 # Variable global para la selección de la nave
 spaceship_selection_display = False
 
+clock = pygame.time.Clock()
+
 # -------------------
 # Funciones botones  |
 # -------------------
@@ -58,6 +60,8 @@ config_fncs = {'go_back': go_back}
 play_fncs   = {'go_back': go_back, 'select_spaceship': select_spaceship,
                 'spaceship_selected_btn_go_back':go_back_spaceship_selected}
 
+tutorial_fncs = {'go_back': go_back}
+
 # Función main para establecer la configuración de la pantalla, caption, icono, etc
 def main():
     pygame.init()
@@ -75,6 +79,7 @@ def main_loop():
 
     init_window     =   Init_Window(screen,init_fncs)
     play_window     =   Play_Window(screen,spaceship_selection_display,play_fncs)
+    tutorial_window =   Tutorial_Window(screen, tutorial_fncs)
     credits_window  =   Credits_Window(screen,credit_fncs)
     settings_window =   Settings_Window(screen,config_fncs)
 
@@ -85,12 +90,11 @@ def main_loop():
                 pygame.quit()
                 sys.exit()
 
-        #TODO: Añadir movimiento ligero al fondo para crear dinamismo
         if window == 0:         # Init window
             init_window.draw()
 
         elif window == 1:       # Tutorial window
-            pass
+            tutorial_window.draw()
 
         elif window == 2:       # Settings window
             settings_window.draw()
@@ -103,7 +107,8 @@ def main_loop():
             
 
         
-        pygame.display.flip()
+        pygame.display.update()
+        clock.tick(60)
 
 
 
