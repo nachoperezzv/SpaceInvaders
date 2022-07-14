@@ -1,6 +1,6 @@
 import pygame
 
-from lib.cons import *
+from cons import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,default_ship = SHIP1):#'/../include/icons/spaceships/spaceship1.png'):

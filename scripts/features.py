@@ -1,5 +1,5 @@
-from lib.widgets import *
-from lib.characters import *
+from widgets import *
+from characters import *
 
 import pygame
 import math

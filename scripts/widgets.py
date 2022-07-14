@@ -1,4 +1,4 @@
-from lib.cons import *
+from cons import *
 
 import pygame
 
