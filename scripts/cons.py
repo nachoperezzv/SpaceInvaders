@@ -30,7 +30,6 @@ QW_KEY          =   ICONS + "/keys/QW_KEY.png"
 SPACE_KEY       =   ICONS + "/keys/SPACE_KEY.png"
 MOUSE           =   ICONS + "/keys/MOUSE3.png"
 
-#TODO: Aumentar a 920x620 el tamaño de las imagenes de fondo
 # Iconos background
 BG_PATH         =   ICONS + "/spaceBackground"
 BG1             =   BG_PATH + "/s1.png"
@@ -43,12 +42,14 @@ ICON            =   ICONS + "/icon.png"
 # Font del juego
 pygame.font.init()
 RETRO_FONT_PATH =   FONTS + "/retro_gaming/RetroGaming.ttf"
+retro_font_mini =   pygame.font.Font(RETRO_FONT_PATH,10)
 retro_font      =   pygame.font.Font(RETRO_FONT_PATH,16)
 retro_font_btn  =   pygame.font.Font(RETRO_FONT_PATH,36)
 retro_font_title=   pygame.font.Font(RETRO_FONT_PATH,48)
 
 class Fonts():
     def __init__(self):
+        self.retro_font_mini= retro_font_mini
         self.retro_font     = retro_font
         self.retro_font_btn = retro_font_btn
         self.retro_font_title=retro_font_title
