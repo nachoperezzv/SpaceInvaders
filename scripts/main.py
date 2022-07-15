@@ -17,6 +17,7 @@ window      =   0
 # Variable global para la selección de la nave
 spaceship_selection_display = False
 
+pygame.init()
 clock = pygame.time.Clock()
 
 # -------------------
@@ -62,6 +63,13 @@ play_fncs   = {'go_back': go_back, 'select_spaceship': select_spaceship,
 
 tutorial_fncs = {'go_back': go_back}
 
+# Timers 
+obstacle_timer = pygame.USEREVENT + 1
+enemy_timer = pygame.USEREVENT + 2
+
+pygame.time.set_timer(obstacle_timer, 1200)
+pygame.time.set_timer(enemy_timer,1500)
+
 # Función main para establecer la configuración de la pantalla, caption, icono, etc
 def main():
     pygame.init()
@@ -74,7 +82,8 @@ def main():
 # salir del juego
 def main_loop():
     global window, spaceship_selection_display
-
+    global obstacle_timer, enemy_timer
+    
     screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 
     init_window     =   Init_Window(screen,init_fncs)
@@ -85,10 +94,17 @@ def main_loop():
 
     while True:
 
+        create_obstacle = False
+        create_enemy    = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == obstacle_timer:
+                create_obstacle = True
+            if event.type == enemy_timer:
+                create_enemy = True
 
         if window == 0:         # Init window
             init_window.draw()
@@ -103,7 +119,7 @@ def main_loop():
             credits_window.draw()
 
         elif window == 4:       # Play window
-            play_window.draw(spaceship_selection_display)
+            play_window.draw(spaceship_selection_display, create_obstacle, create_enemy)
                     
         pygame.display.update()
         clock.tick(60)

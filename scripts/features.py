@@ -1,4 +1,3 @@
-from pickle import TRUE
 from widgets import *
 from characters import *
 
@@ -216,6 +215,10 @@ class Play_Window():
         self.click_text =   self.fonts.retro_font.render("Pulsa para empezar !!", True, WHITE)
         self.click_rect =   self.click_text.get_rect(center=(WINDOW_WIDTH/2,150))
 
+        # Fin de juego
+        self.icon       =   pygame.image.load(ICON2).convert_alpha()
+        self.icon_rect  =   self.icon.get_rect(midbottom=(WINDOW_WIDTH/2,550))
+
         # Botón de vuelta atrás
         self.btn_back   =   Button("<-", BTN_GO_BACK, self.fonts.retro_font)
 
@@ -242,10 +245,16 @@ class Play_Window():
         self.state  =   SELECT_MODE
 
         # Puntuación total del juego
-        self.score  =   0.00   
+        self.score          =   0.00   
+        self.final_score    =   0.00
 
         # Jugadores, enemigos y obstaculos
-        self.player = pygame.sprite.GroupSingle(Player())
+        self.player = pygame.sprite.GroupSingle()
+        self.player.add(Player())
+
+        self.obstacles = pygame.sprite.Group()
+
+        self.enemies = pygame.sprite.Group()
 
     def selection(self, SS):
                 
@@ -282,33 +291,76 @@ class Play_Window():
     def display_score(self):
         self.score += 0.016
 
-        score_text = self.fonts.retro_font.render('SCORE: {:.3f}'.format(self.score), TRUE, WHITE)
+        score_text = self.fonts.retro_font.render('SCORE: {:.3f}'.format(self.score), True, WHITE)
         score_rect = score_text.get_rect(topleft=(20,20))
 
         self.screen.blit(score_text,score_rect)
 
-    def level(self):
+    def level(self,create_obstacle,create_enemy):
 
-    
         if pygame.key.get_pressed()[pygame.K_ESCAPE]:
             self.state = SELECT_MODE
+
+        if create_obstacle:
+            self.obstacles.add(Obstacle(random.choice(OBSTACLES)))
+            self.obstacles.add(Obstacle(random.choice(OBSTACLES)))
         
+        if create_enemy:
+            self.enemies.add(Enemy(random.choice(ENEMIES)))
+
         self.screen.blit(self.bg,self.bg_rect)
 
-        
-                
+
         self.player.draw(self.screen)
         self.player.update()
 
+        self.obstacles.draw(self.screen)
+        self.obstacles.update()
+
+        self.enemies.draw(self.screen)
+        self.enemies.update()
+
         self.display_score()
 
-    def end_of_game(self):
-        pass
+        if self.collision():
+            self.state = END_OF_GAME
 
-    def draw(self,SS):
+    def collision(self):
+
+        if (bool(pygame.sprite.spritecollide(self.player.sprite, self.obstacles, False)) == True or 
+            bool(pygame.sprite.spritecollide(self.player.sprite, self.enemies, False)) == True):
+            
+            self.obstacles.empty()
+            self.enemies.empty()
+
+            self.final_score = self.score
+            self.score = 0
+
+            return True
+        
+        else: 
+            return False
+
+    def end_of_game(self):
+        self.screen.blit(self.bg,self.bg_rect)
+        self.screen.blit(self.alpha,self.al_rect)
+
+        end_of_game_text = self.fonts.retro_font_title.render('Fin del juego !!', True, WHITE)
+        end_score_text   = self.fonts.retro_font_btn.render('YOUR SCORE: {:.3F}'.format(self.final_score), True, WHITE)
+
+        end_of_game_rect = end_of_game_text.get_rect(midtop=(WINDOW_WIDTH/2, 150))
+        end_score_rect   = end_score_text.get_rect(midtop=(WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
+
+        self.screen.blit(end_of_game_text,end_of_game_rect)
+        self.screen.blit(end_score_text,end_score_rect)
+
+        self.screen.blit(self.icon,self.icon_rect)
+
+
+    def draw(self,SS,create_obstacle,create_enemy):
         
         if self.state == SELECT_MODE: self.selection(SS)
-        if self.state == LEVEL1:      self.level()
+        if self.state == LEVEL1:      self.level(create_obstacle,create_enemy)
         if self.state == END_OF_GAME: self.end_of_game()
         
 

@@ -26,7 +26,7 @@ SHIP8           =   SPACESHIPS_PATH + "/spaceship8.png"
 SHIP9           =   SPACESHIPS_PATH + "/spaceship9.png"
 
 # Path de las imagenes para las teclas que se emplean - Tutorial
-QWE_KEY          =   ICONS + "/keys/QWE_KEY.png"
+QWE_KEY         =   ICONS + "/keys/QWE_KEY.png"
 SPACE_KEY       =   ICONS + "/keys/SPACE_KEY.png"
 MOUSE1          =   ICONS + "/keys/MOUSE2.png"
 MOUSE2          =   ICONS + "/keys/MOUSE3.png"
@@ -37,8 +37,31 @@ BG1             =   BG_PATH + "/s1.png"
 BG2             =   BG_PATH + "/s2.png"
 BG3             =   BG_PATH + "/s3.png"
 
+# Iconos asteroiddes
+ASTEROID1       =   ICONS + "/asteroids/asteroid1.png"
+ASTEROID2       =   ICONS + "/asteroids/asteroid2.png"
+ASTEROID3       =   ICONS + "/asteroids/asteroid3.png"
+ASTEROID4       =   ICONS + "/asteroids/asteroid4.png"
+ASTEROID5       =   ICONS + "/asteroids/asteroid5.png"
+
+OBSTACLES       =   [
+    'asteroid1','asteroid1',
+    'asteroid2','asteroid2',
+    'asteroid3','asteroid3',
+    'asteroid4','asteroid4',
+    'asteroid5'
+    ]
+
+# Iconos enemigos
+ENEMY1          =   ICONS + "/enemies/enemy1.png"
+ENEMY2          =   ICONS + "/enemies/enemy2.png"
+ENEMY3          =   ICONS + "/enemies/enemy3.png"
+
+ENEMIES         =   ['enemy1','enemy2','enemy2']
+
 # Icono del juego
 ICON            =   ICONS + "/icon.png"
+ICON2           =   ICONS + "/icon2.png"
 
 # Font del juego
 pygame.font.init()
