@@ -1,4 +1,3 @@
-from turtle import left
 from widgets import *
 from characters import *
 
@@ -231,10 +230,27 @@ class Play_Window():
 
         # Esta variable guarda que nave usaremos para jugar.
         # Por defecto se juega con la número 1
-        self.spaceship  =   1
+        self.spaceship  =   0
 
-    def draw(self,SS):
-        
+        # Estado de la ventana:
+        # SELECT_MODE      - selección ventana
+        # LEVEL1           - nivel 1
+        # LEVEL2           - nivel 2
+        # LEVEL3           - nivel 3
+        # END_OF_GAME      - juego ha finalizado
+        self.state  =   SELECT_MODE
+
+        # Puntuación total del juego
+        self.score  =   0   
+
+        # Jugadores, enemigos y obstaculos
+        self.player = pygame.sprite.GroupSingle(Player())
+
+    def selection(self, SS):
+                
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            self.state = LEVEL1
+
         # SS es la variable del fichero main.py que es igual al valor 
         # de spaceship_selection
 
@@ -261,6 +277,27 @@ class Play_Window():
             # Cuando hayamos seleccionado una nos devolverá el número de nave elegida
             # y pondrá el valor de spaceship_selection a False de nuevo
             self.spaceship = self.display_selection.draw()
+        
+    def level1(self):
+
+    
+        if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            self.state = SELECT_MODE
+        
+        self.screen.blit(self.bg,self.bg_rect)
+                
+        self.player.draw(self.screen)
+        self.player.update()
+
+    def end_of_game(self):
+        pass
+
+    def draw(self,SS):
+        
+        if self.state == SELECT_MODE: self.selection(SS)
+        if self.state == LEVEL1:      self.level1()
+        if self.state == END_OF_GAME: self.end_of_game()
+        
 
 class Tutorial_Window():
     def __init__(self,screen, fncs):
@@ -277,6 +314,7 @@ class Tutorial_Window():
         self.tuto_text =   self.fonts.retro_font.render("Esto son los comandos que debes usar !!", True, WHITE)
         self.tuto_rect =   self.tuto_text.get_rect(center=(WINDOW_WIDTH/2,150))
 
+        #TODO: Añadir botón E, su foto y su texto - BOOSTER
         self.qw_text_1  =   self.fonts.retro_font_mini.render("Q:", True, WHITE)
         self.qw_text_1_r=   self.qw_text_1.get_rect(bottomleft=(110,350))
         self.qw_text_2  =   self.fonts.retro_font_mini.render("Para moverse a la izquierda", True, WHITE)
@@ -301,10 +339,15 @@ class Tutorial_Window():
         # Imagenes de teclas que se van a usar
         self.qw_key         =   pygame.image.load(QW_KEY).convert_alpha()
         self.qw_key_rect    =   self.qw_key.get_rect(center=(220,WINDOW_HEIGHT/2))
+        
         self.space_key      =   pygame.image.load(SPACE_KEY).convert_alpha()
         self.space_key_rect =   self.space_key.get_rect(center=(460, WINDOW_HEIGHT/2))
-        self.mouse          =   pygame.image.load(MOUSE).convert_alpha()
-        self.mouse_rect     =   self.mouse.get_rect(center=(700,WINDOW_HEIGHT/2))
+        
+        self.mouse1         =   pygame.image.load(MOUSE1).convert_alpha()
+        self.mouse2         =   pygame.image.load(MOUSE2).convert_alpha()
+        self.mouses_img     =   [self.mouse1,self.mouse2]
+        self.mouse          =   1
+        self.mouse_rect     =   self.mouses_img[self.mouse].get_rect(center=(700,WINDOW_HEIGHT/2))
 
         self.mouse_angle    =   0
 
@@ -345,19 +388,20 @@ class Tutorial_Window():
         mx, my = pygame.mouse.get_pos()
 
         if mx > 500 and mx < 800 and my > 150 and my < 450:
+            self.mouse = 1
             self.mouse_angle = int(math.degrees(math.atan2(self.mouse_rect.x-mx,self.mouse_rect.y-my)))
 
-            self.mouse_rot = pygame.transform.rotate(self.mouse, self.mouse_angle)
-            self.mouse_rect = self.mouse.get_rect(center=(700,WINDOW_HEIGHT/2))
+            self.mouse_rot = pygame.transform.rotate(self.mouses_img[self.mouse], self.mouse_angle)
+            self.mouse_rect = self.mouses_img[self.mouse].get_rect(center=(700,WINDOW_HEIGHT/2))
 
             self.screen.blit(self.mouse_rot, self.mouse_rect)
 
         else:
-            self.screen.blit(self.mouse, self.mouse_rect)
+            self.mouse = 0
+            self.mouse_rect = self.mouses_img[self.mouse].get_rect(center=(700,WINDOW_HEIGHT/2))
+            self.screen.blit(self.mouses_img[self.mouse], self.mouse_rect)
 
         
-
-
 class Settings_Window():
     def __init__(self,screen,fncs):
     

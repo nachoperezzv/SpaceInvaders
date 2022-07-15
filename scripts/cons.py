@@ -28,7 +28,8 @@ SHIP9           =   SPACESHIPS_PATH + "/spaceship9.png"
 # Path de las imagenes para las teclas que se emplean - Tutorial
 QW_KEY          =   ICONS + "/keys/QW_KEY.png"
 SPACE_KEY       =   ICONS + "/keys/SPACE_KEY.png"
-MOUSE           =   ICONS + "/keys/MOUSE3.png"
+MOUSE1          =   ICONS + "/keys/MOUSE2.png"
+MOUSE2          =   ICONS + "/keys/MOUSE3.png"
 
 # Iconos background
 BG_PATH         =   ICONS + "/spaceBackground"
@@ -53,6 +54,11 @@ class Fonts():
         self.retro_font     = retro_font
         self.retro_font_btn = retro_font_btn
         self.retro_font_title=retro_font_title
+
+# Modos
+SELECT_MODE         =   0
+LEVEL1              =   1
+END_OF_GAME         =   -1
 
 # Colores
 INIT_ALPHA      =   [75,75,75,150]

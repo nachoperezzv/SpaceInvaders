@@ -104,9 +104,7 @@ def main_loop():
 
         elif window == 4:       # Play window
             play_window.draw(spaceship_selection_display)
-            
-
-        
+                    
         pygame.display.update()
         clock.tick(60)
 
