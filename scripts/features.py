@@ -1,3 +1,4 @@
+from pickle import TRUE
 from widgets import *
 from characters import *
 
@@ -241,7 +242,7 @@ class Play_Window():
         self.state  =   SELECT_MODE
 
         # Puntuación total del juego
-        self.score  =   0   
+        self.score  =   0.00   
 
         # Jugadores, enemigos y obstaculos
         self.player = pygame.sprite.GroupSingle(Player())
@@ -277,17 +278,29 @@ class Play_Window():
             # Cuando hayamos seleccionado una nos devolverá el número de nave elegida
             # y pondrá el valor de spaceship_selection a False de nuevo
             self.spaceship = self.display_selection.draw()
-        
-    def level1(self):
+    
+    def display_score(self):
+        self.score += 0.016
+
+        score_text = self.fonts.retro_font.render('SCORE: {:.3f}'.format(self.score), TRUE, WHITE)
+        score_rect = score_text.get_rect(topleft=(20,20))
+
+        self.screen.blit(score_text,score_rect)
+
+    def level(self):
 
     
         if pygame.key.get_pressed()[pygame.K_ESCAPE]:
             self.state = SELECT_MODE
         
         self.screen.blit(self.bg,self.bg_rect)
+
+        
                 
         self.player.draw(self.screen)
         self.player.update()
+
+        self.display_score()
 
     def end_of_game(self):
         pass
@@ -295,7 +308,7 @@ class Play_Window():
     def draw(self,SS):
         
         if self.state == SELECT_MODE: self.selection(SS)
-        if self.state == LEVEL1:      self.level1()
+        if self.state == LEVEL1:      self.level()
         if self.state == END_OF_GAME: self.end_of_game()
         
 
@@ -315,14 +328,18 @@ class Tutorial_Window():
         self.tuto_rect =   self.tuto_text.get_rect(center=(WINDOW_WIDTH/2,150))
 
         #TODO: Añadir botón E, su foto y su texto - BOOSTER
-        self.qw_text_1  =   self.fonts.retro_font_mini.render("Q:", True, WHITE)
-        self.qw_text_1_r=   self.qw_text_1.get_rect(bottomleft=(110,350))
-        self.qw_text_2  =   self.fonts.retro_font_mini.render("Para moverse a la izquierda", True, WHITE)
-        self.qw_text_2_r=   self.qw_text_2.get_rect(bottomleft=(130,350))
-        self.qw_text_3  =   self.fonts.retro_font_mini.render("W:", True, WHITE)
-        self.qw_text_3_r=   self.qw_text_3.get_rect(bottomleft=(100,380))
-        self.qw_text_4  =   self.fonts.retro_font_mini.render("Para moverse hacia la derecha", True, WHITE)
-        self.qw_text_4_r=   self.qw_text_4.get_rect(bottomleft=(120,380))
+        self.qwe_text_1  =   self.fonts.retro_font_mini.render("Q:", True, WHITE)
+        self.qwe_text_1_r=   self.qwe_text_1.get_rect(bottomleft=(110,350))
+        self.qwe_text_2  =   self.fonts.retro_font_mini.render("Para moverse a la izquierda", True, WHITE)
+        self.qwe_text_2_r=   self.qwe_text_2.get_rect(bottomleft=(130,350))
+        self.qwe_text_3  =   self.fonts.retro_font_mini.render("W:", True, WHITE)
+        self.qwe_text_3_r=   self.qwe_text_3.get_rect(bottomleft=(115,380))
+        self.qwe_text_4  =   self.fonts.retro_font_mini.render("Para moverse más rápido", True, WHITE)
+        self.qwe_text_4_r=   self.qwe_text_4.get_rect(bottomleft=(135,380))
+        self.qwe_text_5  =   self.fonts.retro_font_mini.render("E:", True, WHITE)
+        self.qwe_text_5_r=   self.qwe_text_5.get_rect(bottomleft=(112,410))
+        self.qwe_text_6  =   self.fonts.retro_font_mini.render("Para moverse a la derecha", True, WHITE)
+        self.qwe_text_6_r=   self.qwe_text_6.get_rect(bottomleft=(132,410))
 
         self.space_txt  =   self.fonts.retro_font_mini.render("Presione SPACE para disparar", True, WHITE)
         self.space_txt_r=   self.space_txt.get_rect(midbottom=(460,350))
@@ -337,8 +354,8 @@ class Tutorial_Window():
         self.bg_rect =   self.bg.get_rect()
 
         # Imagenes de teclas que se van a usar
-        self.qw_key         =   pygame.image.load(QW_KEY).convert_alpha()
-        self.qw_key_rect    =   self.qw_key.get_rect(center=(220,WINDOW_HEIGHT/2))
+        self.qwe_key         =   pygame.image.load(QWE_KEY).convert_alpha()
+        self.qwe_key_rect    =   self.qwe_key.get_rect(center=(210,WINDOW_HEIGHT/2))
         
         self.space_key      =   pygame.image.load(SPACE_KEY).convert_alpha()
         self.space_key_rect =   self.space_key.get_rect(center=(460, WINDOW_HEIGHT/2))
@@ -371,10 +388,12 @@ class Tutorial_Window():
 
         self.screen.blit(self.tuto_text,self.tuto_rect)
 
-        self.screen.blit(self.qw_text_1,self.qw_text_1_r)
-        self.screen.blit(self.qw_text_2,self.qw_text_2_r)
-        self.screen.blit(self.qw_text_3,self.qw_text_3_r)
-        self.screen.blit(self.qw_text_4,self.qw_text_4_r)
+        self.screen.blit(self.qwe_text_1,self.qwe_text_1_r)
+        self.screen.blit(self.qwe_text_2,self.qwe_text_2_r)
+        self.screen.blit(self.qwe_text_3,self.qwe_text_3_r)
+        self.screen.blit(self.qwe_text_4,self.qwe_text_4_r)
+        self.screen.blit(self.qwe_text_5,self.qwe_text_5_r)
+        self.screen.blit(self.qwe_text_6,self.qwe_text_6_r)
 
         self.screen.blit(self.space_txt,self.space_txt_r)
 
@@ -382,7 +401,7 @@ class Tutorial_Window():
         self.screen.blit(self.mouse_txt2,self.mouse_txt2r)
         
         # Imprimimos las imagenes y hacemos que el ratón gire
-        self.screen.blit(self.qw_key, self.qw_key_rect)
+        self.screen.blit(self.qwe_key, self.qwe_key_rect)
         self.screen.blit(self.space_key, self.space_key_rect)
 
         mx, my = pygame.mouse.get_pos()

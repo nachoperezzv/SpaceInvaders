@@ -26,7 +26,7 @@ SHIP8           =   SPACESHIPS_PATH + "/spaceship8.png"
 SHIP9           =   SPACESHIPS_PATH + "/spaceship9.png"
 
 # Path de las imagenes para las teclas que se emplean - Tutorial
-QW_KEY          =   ICONS + "/keys/QW_KEY.png"
+QWE_KEY          =   ICONS + "/keys/QWE_KEY.png"
 SPACE_KEY       =   ICONS + "/keys/SPACE_KEY.png"
 MOUSE1          =   ICONS + "/keys/MOUSE2.png"
 MOUSE2          =   ICONS + "/keys/MOUSE3.png"
