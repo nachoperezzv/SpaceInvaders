@@ -217,7 +217,7 @@ class Play_Window():
 
         # Fin de juego
         self.icon       =   pygame.image.load(ICON2).convert_alpha()
-        self.icon_rect  =   self.icon.get_rect(midbottom=(WINDOW_WIDTH/2,550))
+        self.icon_rect  =   self.icon.get_rect(midbottom=(WINDOW_WIDTH/2,100))
 
         # Botón de vuelta atrás
         self.btn_back   =   Button("<-", BTN_GO_BACK, self.fonts.retro_font)
@@ -245,12 +245,14 @@ class Play_Window():
         self.state  =   SELECT_MODE
 
         # Puntuación total del juego
-        self.score          =   0.00   
-        self.final_score    =   0.00
+        self.score              =   0.00   
+        self.asteroids_destroyed=   0
+        self.enemies_destroyed  =   0
+        self.final_score        =   0.00
 
         # Jugadores, enemigos y obstaculos
         self.player = pygame.sprite.GroupSingle()
-        self.player.add(Player())
+        self.player.add(Player(self.screen))
 
         self.obstacles = pygame.sprite.Group()
 
@@ -291,7 +293,7 @@ class Play_Window():
     def display_score(self):
         self.score += 0.016
 
-        score_text = self.fonts.retro_font.render('SCORE: {:.3f}'.format(self.score), True, WHITE)
+        score_text = self.fonts.retro_font.render('SCORE: {}'.format(int(self.score)), True, WHITE)
         score_rect = score_text.get_rect(topleft=(20,20))
 
         self.screen.blit(score_text,score_rect)
@@ -300,13 +302,14 @@ class Play_Window():
 
         if pygame.key.get_pressed()[pygame.K_ESCAPE]:
             self.state = SELECT_MODE
-
+        
         if create_obstacle:
             self.obstacles.add(Obstacle(random.choice(OBSTACLES)))
             self.obstacles.add(Obstacle(random.choice(OBSTACLES)))
         
         if create_enemy:
             self.enemies.add(Enemy(random.choice(ENEMIES)))
+            pass
 
         self.screen.blit(self.bg,self.bg_rect)
 
@@ -327,6 +330,18 @@ class Play_Window():
 
     def collision(self):
 
+        if self.player.sprite.laser:
+            for laser in self.player.sprite.laser:
+                if bool(pygame.sprite.spritecollide(laser,self.obstacles,True)):
+                    self.score += 5
+                    self.asteroids_destroyed += 1
+                    laser.kill()
+                
+                if bool(pygame.sprite.spritecollide(laser,self.enemies, True)):
+                    self.score += 10
+                    self.enemies_destroyed += 1
+                    laser.kill()
+
         if (bool(pygame.sprite.spritecollide(self.player.sprite, self.obstacles, False)) == True or 
             bool(pygame.sprite.spritecollide(self.player.sprite, self.enemies, False)) == True):
             
@@ -346,16 +361,21 @@ class Play_Window():
         self.screen.blit(self.alpha,self.al_rect)
 
         end_of_game_text = self.fonts.retro_font_title.render('Fin del juego !!', True, WHITE)
-        end_score_text   = self.fonts.retro_font_btn.render('YOUR SCORE: {:.3F}'.format(self.final_score), True, WHITE)
+        end_score_text   = self.fonts.retro_font_btn.render('YOUR SCORE: {}'.format(int(self.final_score)), True, WHITE)
+        statistic_text_1 = self.fonts.retro_font_btn.render('Asteroides destruidos: {}'.format(self.asteroids_destroyed), True, WHITE)
+        statistic_text_2 = self.fonts.retro_font_btn.render('Enemigos abatidos: {}'.format(self.enemies_destroyed),True, WHITE)
 
         end_of_game_rect = end_of_game_text.get_rect(midtop=(WINDOW_WIDTH/2, 150))
         end_score_rect   = end_score_text.get_rect(midtop=(WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
+        statistic_rect_1 = statistic_text_1.get_rect(midtop=(WINDOW_WIDTH/2, 450))
+        statistic_rect_2 = statistic_text_2.get_rect(midtop=(WINDOW_WIDTH/2, 500))
 
         self.screen.blit(end_of_game_text,end_of_game_rect)
         self.screen.blit(end_score_text,end_score_rect)
+        self.screen.blit(statistic_text_1,statistic_rect_1)
+        self.screen.blit(statistic_text_2,statistic_rect_2)
 
         self.screen.blit(self.icon,self.icon_rect)
-
 
     def draw(self,SS,create_obstacle,create_enemy):
         

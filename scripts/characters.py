@@ -1,21 +1,40 @@
 import pygame
 import math
 import random
+import time
 
 from cons import *
 
 class Laser(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self,start_pos,angle):
         super().__init__()
+        
+        self.theta = angle      # x angle
+        self.phi = 90 - angle   # y angle
 
-        self.image = ''
-        self.rect  = ''
+        self.speed_x = -8 * math.sin(math.radians(self.theta))
+        self.speed_y = -8* math.sin(math.radians(self.phi))
+
+
+        self.image = pygame.transform.rotate(pygame.Surface((1,15)),angle)
+        self.image.fill('red')
+        self.rect = self.image.get_rect(center=start_pos)
+    
+    def move(self):
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
+
+    def destroy(self):
+        if self.rect.y < -10:
+            self.kill()
     
     def update(self):
-        pass
+        self.move()
+        self.destroy()
+
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self,screen):
         super().__init__()
 
         self.s1     =   pygame.image.load(SHIP1).convert_alpha()
@@ -33,8 +52,12 @@ class Player(pygame.sprite.Sprite):
         self.image = self.spaceships[self.ship_index]
         self.rect = self.image.get_rect(center=(WINDOW_WIDTH/2,500))
 
-        
+        self.cooldown = 0.5
+        self.cooling  = time.time()
 
+        self.screen = screen
+        self.laser = pygame.sprite.Group()
+        
     def player_input(self):
         self.keys = pygame.key.get_pressed()
         mx,my = pygame.mouse.get_pos()
@@ -44,18 +67,15 @@ class Player(pygame.sprite.Sprite):
 
         if self.keys[pygame.K_w]: 
             booster = 2
-        if self.keys[pygame.K_q] and self.rect.x > -50:
+        if self.keys[pygame.K_q]:
             self.movement = -3 * booster
-        if self.keys[pygame.K_e] and self.rect.x < 900:
+        if self.keys[pygame.K_e]:
             self.movement = 3 * booster 
-        if self.keys[pygame.K_SPACE]:
-            pass
         
         self.mouse_angle = int(math.degrees(math.atan2(self.rect.x-mx,self.rect.y-my)))
 
         self.image_rot = pygame.transform.rotate(self.image, self.mouse_angle)
         self.image = self.image_rot
-        
 
     def set_spaceship(self):
         self.ship_index = 4
@@ -64,9 +84,25 @@ class Player(pygame.sprite.Sprite):
     def move(self):
         self.rect.x += self.movement
 
+    def shoot(self):
+        if pygame.key.get_pressed()[pygame.K_SPACE] and time.time() - self.cooling > self.cooldown:
+            self.laser.add(Laser(self.rect.center,self.mouse_angle))
+            self.cooling = time.time()
+        
+        self.laser.draw(self.screen)
+        self.laser.update()
+
+    def limits(self):
+        if self.rect.left <= 0:
+            self.rect.left = 0
+        if self.rect.right >= WINDOW_WIDTH:
+            self.rect.right = WINDOW_WIDTH
+
     def update(self):
         self.set_spaceship()
         self.player_input()
+        self.limits()
+        self.shoot()
         self.move()
 
 

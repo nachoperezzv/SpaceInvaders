@@ -67,8 +67,8 @@ tutorial_fncs = {'go_back': go_back}
 obstacle_timer = pygame.USEREVENT + 1
 enemy_timer = pygame.USEREVENT + 2
 
-pygame.time.set_timer(obstacle_timer, 1200)
-pygame.time.set_timer(enemy_timer,1500)
+pygame.time.set_timer(obstacle_timer, 2000)
+pygame.time.set_timer(enemy_timer,5000)
 
 # Función main para establecer la configuración de la pantalla, caption, icono, etc
 def main():
