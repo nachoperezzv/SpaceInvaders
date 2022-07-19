@@ -119,7 +119,7 @@ def main_loop():
             credits_window.draw()
 
         elif window == 4:       # Play window
-            play_window.draw(spaceship_selection_display, create_obstacle, create_enemy)
+            play_window.draw(spaceship_selection_display ,create_obstacle, create_enemy)
                     
         pygame.display.update()
         clock.tick(60)

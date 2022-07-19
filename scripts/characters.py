@@ -77,8 +77,8 @@ class Player(pygame.sprite.Sprite):
         self.image_rot = pygame.transform.rotate(self.image, self.mouse_angle)
         self.image = self.image_rot
 
-    def set_spaceship(self):
-        self.ship_index = 4
+    def set_spaceship(self,spaceship):
+        self.ship_index = spaceship
         self.image = self.spaceships[self.ship_index]
         
     def move(self):
@@ -98,8 +98,8 @@ class Player(pygame.sprite.Sprite):
         if self.rect.right >= WINDOW_WIDTH:
             self.rect.right = WINDOW_WIDTH
 
-    def update(self):
-        self.set_spaceship()
+    def update(self,spaceship):
+        self.set_spaceship(spaceship)
         self.player_input()
         self.limits()
         self.shoot()

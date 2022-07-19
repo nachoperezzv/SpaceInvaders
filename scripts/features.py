@@ -127,7 +127,7 @@ class Display_Selection():
                              self.btn_s7, self.btn_s8, self.btn_s9]
 
         # Spaceship selected. Default = 1
-        self.spaceship_selected = 1
+        self.spaceship_selected = 0
     
     def select_S1(self): self.spaceship_selected = 1
     def select_S2(self): self.spaceship_selected = 2
@@ -143,6 +143,8 @@ class Display_Selection():
         # Se printea otra vez el fondo para enmascarar los titulos de la anterior ventana
         self.screen.blit(self.bg,self.bg_rect)
         self.screen.blit(self.alpha,self.al_rect)
+
+        self.ship_selected = 0
 
         # Dibujamos también un marco con color soft grey
         pygame.draw.rect(self.screen, LIGHT_GREY, self.border, width=5, border_radius=5)
@@ -170,6 +172,7 @@ class Display_Selection():
             if i == self.spaceship_selected:
                 s.color_on  = [85,100,235]
                 s.color_off = [64,64,255]
+                self.ship_selected = i-1
             else:
                 s.color_on  = [195,195,195]
                 s.color_off = [175,175,175]
@@ -185,7 +188,7 @@ class Display_Selection():
         self.screen.blit(self.s8,self.s8_rect)
         self.screen.blit(self.s9,self.s9_rect)
 
-        return 0
+        return self.ship_selected
 
 
 class Play_Window():
@@ -315,7 +318,7 @@ class Play_Window():
 
 
         self.player.draw(self.screen)
-        self.player.update()
+        self.player.update(self.spaceship)
 
         self.obstacles.draw(self.screen)
         self.obstacles.update()
