@@ -16,8 +16,9 @@ class Laser(pygame.sprite.Sprite):
         self.speed_y = -8* math.sin(math.radians(self.phi))
 
 
-        self.image = pygame.transform.rotate(pygame.Surface((1,15)),angle)
-        self.image.fill('red')
+        #self.image = pygame.transform.rotate(pygame.Surface((1,15)),angle)
+        #self.image.fill('red')
+        self.image = pygame.transform.rotate(pygame.image.load(LASER).convert_alpha(),angle)
         self.rect = self.image.get_rect(center=start_pos)
     
     def move(self):
@@ -58,6 +59,8 @@ class Player(pygame.sprite.Sprite):
         self.screen = screen
         self.laser = pygame.sprite.Group()
         
+        self.laser_sound = pygame.mixer.Sound(SOUNDS + '/laserShoot.wav') 
+        
     def player_input(self):
         self.keys = pygame.key.get_pressed()
         mx,my = pygame.mouse.get_pos()
@@ -88,6 +91,10 @@ class Player(pygame.sprite.Sprite):
         if pygame.key.get_pressed()[pygame.K_SPACE] and time.time() - self.cooling > self.cooldown:
             self.laser.add(Laser(self.rect.center,self.mouse_angle))
             self.cooling = time.time()
+
+            pygame.mixer.stop()
+            self.laser_sound.set_volume(1)
+            self.laser_sound.play()
         
         self.laser.draw(self.screen)
         self.laser.update()

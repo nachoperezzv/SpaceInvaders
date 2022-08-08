@@ -6,7 +6,7 @@ import math
 
 class Init_Window():
 
-    def __init__(self, screen, functions):
+    def __init__(self, screen, functions, sound_volume=1):
         self.screen = screen
         self.functions = functions
 
@@ -33,7 +33,7 @@ class Init_Window():
         self.btn_start       =   Button("START",     BTN_START_LOC,    retro_font_btn)
         self.btn_tutorial    =   Button("TUTORIAL",  BTN_TUTORIAL_LOC, retro_font_btn)
         self.btn_settings    =   Button("SETTINGS",  BTN_SETTINGS_LOC, retro_font_btn)
-        self.btn_credits     =   Button("CREDITS",   BTN_CREDITS_LOC,  retro_font_btn)
+        self.btn_credits     =   Button("CREDITS",   BTN_CREDITS_LOC,  retro_font_btn)       
 
     def draw(self): 
         # Se añaden a la pantalla antes que el texto para que no lo esconda
@@ -92,35 +92,35 @@ class Display_Selection():
 
         # Definimos los botones para seleccionar una nave u otra
         self.s1         =   pygame.image.load(SHIP1)
-        self.s1_rect    =   self.s1.get_rect(left=250,top=165)
+        self.s1_rect    =   self.s1.get_rect(left=240,top=125)
 
         self.s2         =   pygame.image.load(SHIP2)
-        self.s2_rect    =   self.s2.get_rect(left=425,top=150)
+        self.s2_rect    =   self.s2.get_rect(left=415,top=125)
 
         self.s3         =   pygame.image.load(SHIP3)
-        self.s3_rect    =   self.s3.get_rect(left=600,top=150)
+        self.s3_rect    =   self.s3.get_rect(left=590,top=125)
 
         # ----
 
         self.s4         =   pygame.image.load(SHIP4)
-        self.s4_rect    =   self.s4.get_rect(left=250,top=300)
+        self.s4_rect    =   self.s4.get_rect(left=240,top=275)
 
         self.s5         =   pygame.image.load(SHIP5)
-        self.s5_rect    =   self.s5.get_rect(left=425,top=300)
+        self.s5_rect    =   self.s5.get_rect(left=415,top=285)
 
         self.s6         =   pygame.image.load(SHIP6)
-        self.s6_rect    =   self.s6.get_rect(left=600,top=315)
+        self.s6_rect    =   self.s6.get_rect(left=590,top=280)
         
         # ----
         
         self.s7         =   pygame.image.load(SHIP7)
-        self.s7_rect    =   self.s7.get_rect(left=250,top=450)
+        self.s7_rect    =   self.s7.get_rect(left=240,top=435)
 
         self.s8         =   pygame.image.load(SHIP8)
-        self.s8_rect    =   self.s8.get_rect(left=425,top=450)
+        self.s8_rect    =   self.s8.get_rect(left=415,top=430)
 
         self.s9         =   pygame.image.load(SHIP9)
-        self.s9_rect    =   self.s9.get_rect(left=600,top=450)
+        self.s9_rect    =   self.s9.get_rect(left=590,top=430)
 
         self.ships      =   [self.btn_s1, self.btn_s2, self.btn_s3,
                              self.btn_s4, self.btn_s5, self.btn_s6,
@@ -130,13 +130,21 @@ class Display_Selection():
         self.spaceship_selected = 0
     
     def select_S1(self): self.spaceship_selected = 1
+   
     def select_S2(self): self.spaceship_selected = 2
+   
     def select_S3(self): self.spaceship_selected = 3
+   
     def select_S4(self): self.spaceship_selected = 4
+   
     def select_S5(self): self.spaceship_selected = 5
+   
     def select_S6(self): self.spaceship_selected = 6
+   
     def select_S7(self): self.spaceship_selected = 7
+   
     def select_S8(self): self.spaceship_selected = 8
+   
     def select_S9(self): self.spaceship_selected = 9
 
     def draw(self):
@@ -261,6 +269,10 @@ class Play_Window():
 
         self.enemies = pygame.sprite.Group()
 
+        # Efectos de sonido  
+        self.dead_sound = pygame.mixer.Sound(SOUNDS + '/dead.wav')
+        self.explosion_sound = pygame.mixer.Sound(SOUNDS + '/explosion.wav')
+
     def selection(self, SS):
                 
         if pygame.key.get_pressed()[pygame.K_SPACE]:
@@ -345,6 +357,10 @@ class Play_Window():
                     self.enemies_destroyed += 1
                     laser.kill()
 
+                self.explosion_sound.set_volume(1)
+                self.explosion_sound.play()
+            
+
         if (bool(pygame.sprite.spritecollide(self.player.sprite, self.obstacles, False)) == True or 
             bool(pygame.sprite.spritecollide(self.player.sprite, self.enemies, False)) == True):
             
@@ -353,6 +369,9 @@ class Play_Window():
 
             self.final_score = self.score
             self.score = 0
+
+            self.dead_sound.set_volume(1)
+            self.dead_sound.play()
 
             return True
         

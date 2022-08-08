@@ -9,6 +9,7 @@ CAPTION         =   "Space Invaders"
 
 # Path carpeta icons ../include/icons/**
 ICONS           =   os.path.dirname(os.path.abspath(__file__)) + "/../include/icons"
+SOUNDS          =   os.path.dirname(os.path.abspath(__file__)) + "/../include/sounds"
 
 # Path carpeta fonts ../include/fonts/**
 FONTS           =   os.path.dirname(os.path.abspath(__file__)) + "/../include/fonts"
@@ -24,6 +25,8 @@ SHIP6           =   SPACESHIPS_PATH + "/spaceship6.png"
 SHIP7           =   SPACESHIPS_PATH + "/spaceship7.png"
 SHIP8           =   SPACESHIPS_PATH + "/spaceship8.png"
 SHIP9           =   SPACESHIPS_PATH + "/spaceship9.png"
+
+LASER           =   SPACESHIPS_PATH + "/laser.png"
 
 # Path de las imagenes para las teclas que se emplean - Tutorial
 QWE_KEY         =   ICONS + "/keys/QWE_KEY.png"
