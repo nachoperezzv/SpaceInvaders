@@ -164,10 +164,9 @@ class Enemy(pygame.sprite.Sprite):
         self.rect   = self.image.get_rect(midbottom=(random.randint(50,850), -random.randint(100,150)))    
 
         self.direction = 0
-        self.velocity  = random.choice([0.5,1,1.25])
+        self.velocity  = random.choice([1,2])
 
     def enemy_movement(self):
-        self.rect.x += self.direction
         self.rect.y += self.velocity
     
     def destroy(self):
