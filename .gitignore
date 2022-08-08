@@ -1,6 +1,6 @@
 **/site
 **/Lib 
 **/Scripts
-**/_pycache__
+**/__pycache__
 
 **/*.cfg
