@@ -3,6 +3,7 @@
 Esto es una versión del juego _Space Invaders_, popularizado en 1978 por Toshihiro Nishikado, al que se le ha dado un estilo más actual gracias a la librería 
 <a href="https://www.pygame.org/docs/" target="_blank">**pygame (versión 2.1.1)**</a>
 
+![Space Inavaders demo](include/icons/Space%20Invaders.gif)
 
 ## Índice
 1. [Un poco de historia](#un-poco-de-historia)
