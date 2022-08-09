@@ -145,7 +145,8 @@ class Slider():
         pygame.draw.rect(self.screen, self.bar_color, self.bar)
         pygame.draw.rect(self.screen, self.slider_color, self.slider)
 
-        self.slider_mark   =   str(int((self.left_slide-self.left_bar)/(self.width_bar-self.width_slide) * (self.last) + self.first))
+        self.slider_mark    =   int((self.left_slide-self.left_bar)/(self.width_bar-self.width_slide) * (self.last) + self.first)
+        self.slider_mark_txt=   str(self.slider_mark)
 
         mark_text   = self.font.render(str(self.slider_mark), True, [255,255,255])
         mark_rect   = mark_text.get_rect(center=(WINDOW_WIDTH/2,(self.top_bar + self.height_bar)+30))

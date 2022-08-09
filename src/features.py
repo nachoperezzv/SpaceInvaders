@@ -261,6 +261,10 @@ class Play_Window():
         self.enemies_destroyed  =   0
         self.final_score        =   0.00
 
+        # Volumen juego
+        self.music_volume = 1
+        self.effects_volume = 1
+
         # Jugadores, enemigos y obstaculos
         self.player = pygame.sprite.GroupSingle()
         self.player.add(Player(self.screen))
@@ -330,7 +334,7 @@ class Play_Window():
 
 
         self.player.draw(self.screen)
-        self.player.update(self.spaceship)
+        self.player.update(self.spaceship,self.effects_volume)
 
         self.obstacles.draw(self.screen)
         self.obstacles.update()
@@ -347,37 +351,49 @@ class Play_Window():
 
         if self.player.sprite.laser:
             for laser in self.player.sprite.laser:
-                if bool(pygame.sprite.spritecollide(laser,self.obstacles,True)):
-                    self.score += 5
-                    self.asteroids_destroyed += 1
-                    laser.kill()
-                
-                if bool(pygame.sprite.spritecollide(laser,self.enemies, True)):
-                    self.score += 10
-                    self.enemies_destroyed += 1
-                    laser.kill()
 
-                self.explosion_sound.set_volume(1)
-                self.explosion_sound.play()
-            
+                # Colisión laser - asteroide
+                if bool(pygame.sprite.spritecollide(laser,self.obstacles,False)):
+                    if bool(pygame.sprite.spritecollide(laser,self.obstacles,True,pygame.sprite.collide_mask)):
+                        self.score += 5
+                        self.asteroids_destroyed += 1
+                        laser.kill()
+
+                        self.explosion_sound.set_volume(self.effects_volume)
+                        self.explosion_sound.play()
+                
+                # Colisión laser - enemigo
+                if bool(pygame.sprite.spritecollide(laser,self.enemies, False)):
+                    if bool(pygame.sprite.spritecollide(laser,self.enemies, True, pygame.sprite.collide_mask)):
+                        self.score += 10
+                        self.enemies_destroyed += 1
+                        laser.kill()
+
+                        self.explosion_sound.set_volume(self.effects_volume)
+                        self.explosion_sound.play()
 
         if (bool(pygame.sprite.spritecollide(self.player.sprite, self.obstacles, False)) == True or 
             bool(pygame.sprite.spritecollide(self.player.sprite, self.enemies, False)) == True):
             
-            self.obstacles.empty()
-            self.enemies.empty()
+            if (bool(pygame.sprite.spritecollide(self.player.sprite, self.obstacles, True, pygame.sprite.collide_mask)) == True or 
+                bool(pygame.sprite.spritecollide(self.player.sprite, self.enemies, True, pygame.sprite.collide_mask)) == True):
+                self.obstacles.empty()
+                self.enemies.empty()
 
-            self.final_score = self.score
-            self.score = 0
+                self.final_score = self.score
+                self.score = 0
 
-            self.dead_sound.set_volume(1)
-            self.dead_sound.play()
+                self.dead_sound.set_volume(self.effects_volume)
+                self.dead_sound.play()
 
-            return True
+                return True
+            
+            else:
+                return False
         
         else: 
             return False
-
+    
     def end_of_game(self):
         self.screen.blit(self.bg,self.bg_rect)
         self.screen.blit(self.alpha,self.al_rect)
@@ -399,8 +415,10 @@ class Play_Window():
 
         self.screen.blit(self.icon,self.icon_rect)
 
-    def draw(self,SS,create_obstacle,create_enemy):
-        
+    def draw(self,SS,create_obstacle,create_enemy, music_volume, effects_volume):
+        self.music_volume = music_volume
+        self.effects_volume = effects_volume
+
         if self.state == SELECT_MODE: self.selection(SS)
         if self.state == LEVEL1:      self.level(create_obstacle,create_enemy)
         if self.state == END_OF_GAME: self.end_of_game()
@@ -421,7 +439,6 @@ class Tutorial_Window():
         self.tuto_text =   self.fonts.retro_font.render("Esto son los comandos que debes usar !!", True, WHITE)
         self.tuto_rect =   self.tuto_text.get_rect(center=(WINDOW_WIDTH/2,150))
 
-        #TODO: Añadir botón E, su foto y su texto - BOOSTER
         self.qwe_text_1  =   self.fonts.retro_font_mini.render("Q:", True, WHITE)
         self.qwe_text_1_r=   self.qwe_text_1.get_rect(bottomleft=(110,350))
         self.qwe_text_2  =   self.fonts.retro_font_mini.render("Para moverse a la izquierda", True, WHITE)
@@ -461,7 +478,6 @@ class Tutorial_Window():
         self.mouse_rect     =   self.mouses_img[self.mouse].get_rect(center=(700,WINDOW_HEIGHT/2))
 
         self.mouse_angle    =   0
-
         
         # Lo oscurecemos un poco con un fondo en alpha de la misma imagen superpuesto
         self.alpha   =   self.bg.convert_alpha()
@@ -470,8 +486,7 @@ class Tutorial_Window():
 
         # Botón de vuelta atrás
         self.btn_back   =   Button("<-", BTN_GO_BACK, self.fonts.retro_font)
-
-        
+       
     def draw(self):
         # Actualización del fondo para pasar de la pantalla inicial a la de juego
         self.screen.blit(self.bg,self.bg_rect)
@@ -569,8 +584,10 @@ class Settings_Window():
         self.screen.blit(self.effects_text,self.effects_rect)
 
         # Printeamos los sliders
-        self.slider_music.draw()
-        self.slider_effects.draw()
+        music_volume = self.slider_music.draw()
+        effects_volume = self.slider_effects.draw()
+
+        return music_volume/100, effects_volume/100
 
 
 class Credits_Window():

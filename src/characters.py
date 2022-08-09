@@ -15,11 +15,9 @@ class Laser(pygame.sprite.Sprite):
         self.speed_x = -8 * math.sin(math.radians(self.theta))
         self.speed_y = -8* math.sin(math.radians(self.phi))
 
-
-        #self.image = pygame.transform.rotate(pygame.Surface((1,15)),angle)
-        #self.image.fill('red')
-        self.image = pygame.transform.rotate(pygame.image.load(LASER).convert_alpha(),angle)
-        self.rect = self.image.get_rect(center=start_pos)
+        self.image  = pygame.transform.rotate(pygame.image.load(LASER).convert_alpha(),angle)
+        self.rect   = self.image.get_rect(center=start_pos)
+        self.mask   = pygame.mask.from_surface(self.image)
     
     def move(self):
         self.rect.x += self.speed_x
@@ -50,8 +48,9 @@ class Player(pygame.sprite.Sprite):
         self.spaceships  =   [self.s1,self.s2,self.s3,self.s4,self.s5,self.s6,self.s7,self.s8,self.s9]
         self.ship_index  =   0
 
-        self.image = self.spaceships[self.ship_index]
-        self.rect = self.image.get_rect(center=(WINDOW_WIDTH/2,500))
+        self.image  = self.spaceships[self.ship_index]
+        self.rect   = self.image.get_rect(center=(WINDOW_WIDTH/2,500))
+        self.mask   = pygame.mask.from_surface(self.image)
 
         self.cooldown = 0.5
         self.cooling  = time.time()
@@ -87,13 +86,13 @@ class Player(pygame.sprite.Sprite):
     def move(self):
         self.rect.x += self.movement
 
-    def shoot(self):
+    def shoot(self,effects_volume):
         if pygame.key.get_pressed()[pygame.K_SPACE] and time.time() - self.cooling > self.cooldown:
             self.laser.add(Laser(self.rect.center,self.mouse_angle))
             self.cooling = time.time()
 
             pygame.mixer.stop()
-            self.laser_sound.set_volume(1)
+            self.laser_sound.set_volume(effects_volume)
             self.laser_sound.play()
         
         self.laser.draw(self.screen)
@@ -105,11 +104,11 @@ class Player(pygame.sprite.Sprite):
         if self.rect.right >= WINDOW_WIDTH:
             self.rect.right = WINDOW_WIDTH
 
-    def update(self,spaceship):
+    def update(self,spaceship,effects_volume):
         self.set_spaceship(spaceship)
         self.player_input()
         self.limits()
-        self.shoot()
+        self.shoot(effects_volume)
         self.move()
 
 
@@ -130,7 +129,8 @@ class Obstacle(pygame.sprite.Sprite):
 
         
         self.image  = self.asteroid
-        self.rect   = self.image.get_rect(midbottom=(random.randint(50,850), -random.randint(100,150)))    
+        self.rect   = self.image.get_rect(midbottom=(random.randint(50,850), -random.randint(100,150)))   
+        self.mask   = pygame.mask.from_surface(self.image) 
 
         self.direction = random.choice([1,0,0,-1])
         self.velocity  = random.choice([2,2.5,3])
@@ -161,7 +161,8 @@ class Enemy(pygame.sprite.Sprite):
         
         
         self.image  = self.enemy
-        self.rect   = self.image.get_rect(midbottom=(random.randint(50,850), -random.randint(100,150)))    
+        self.rect   = self.image.get_rect(midbottom=(random.randint(50,850), -random.randint(100,150)))   
+        self.mask   = pygame.mask.from_surface(self.image)
 
         self.direction = 0
         self.velocity  = random.choice([1,2])

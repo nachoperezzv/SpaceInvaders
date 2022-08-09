@@ -17,6 +17,7 @@ window      =   0
 # Variable global para la selección de la nave
 spaceship_selection_display = False
 
+# Iniciando PYGAME
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -50,6 +51,7 @@ def go_back_spaceship_selected():
 def select_spaceship():
     global spaceship_selection_display
     spaceship_selection_display = True
+
 
 init_fncs   = {'start':start_fnc, 'tutorial':tutorial_fnc, 
                 'settings':settings_fnc, 'credits':credits_fnc}
@@ -92,6 +94,9 @@ def main_loop():
     credits_window  =   Credits_Window(screen,credit_fncs)
     settings_window =   Settings_Window(screen,config_fncs)
 
+    music_volume = 1
+    effects_volume = 1
+
     while True:
 
         create_obstacle = False
@@ -113,13 +118,13 @@ def main_loop():
             tutorial_window.draw()
 
         elif window == 2:       # Settings window
-            settings_window.draw()
+            music_volume, effects_volume = settings_window.draw()
 
         elif window == 3:       # Credits window
             credits_window.draw()
 
         elif window == 4:       # Play window
-            play_window.draw(spaceship_selection_display ,create_obstacle, create_enemy)
+            play_window.draw(spaceship_selection_display ,create_obstacle, create_enemy, music_volume, effects_volume)       
                     
         pygame.display.update()
         clock.tick(60)
